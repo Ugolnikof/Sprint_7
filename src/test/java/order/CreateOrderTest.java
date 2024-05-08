@@ -21,6 +21,7 @@ public class CreateOrderTest {
     public static Object[][] getData() {
         return new Object[][] {
                 {new String[] {"BLACK"}},
+                {new String[] {"GREY"}},
                 {new String[] {"BLACK", "GREY"}},
                 {new String[] {}},
         };
