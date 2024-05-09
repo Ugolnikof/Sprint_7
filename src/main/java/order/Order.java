@@ -1,14 +1,5 @@
 package order;
 
-import configure.EnvConfig;
-import io.qameta.allure.Step;
-import io.restassured.response.ValidatableResponse;
-
-import java.net.HttpURLConnection;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.notNullValue;
-
 public class Order {
     private String firstName;
     private String lastName;
@@ -30,44 +21,6 @@ public class Order {
         this.deliveryDate = deliveryDate;
         this.comment = comment;
         this.color = color;
-    }
-
-    @Step("check orders list shows successfully")
-    public static void checkOrdersListShows(ValidatableResponse orderList) {
-        orderList
-                .statusCode(HttpURLConnection.HTTP_OK)
-                .assertThat()
-                .body("orders", notNullValue());
-    }
-
-    @Step("get orders list")
-    public static ValidatableResponse getOrdersList() {
-        return given().log().all()
-                .contentType(io.restassured.http.ContentType.JSON)
-                .baseUri(EnvConfig.BASE_URL)
-                .when()
-                .get(EnvConfig.ORDER_PATH)
-                .then().log().all();
-    }
-
-    @Step("create order")
-    public static ValidatableResponse createOrder(Order order) {
-        return given().log().all()
-                .contentType(io.restassured.http.ContentType.JSON)
-                .baseUri(EnvConfig.BASE_URL)
-                .body(order)
-                .when()
-                .post(EnvConfig.ORDER_PATH)
-                .then().log().all();
-    }
-
-    @Step("check order created successfully")
-    public static Integer checkOrderCreated(ValidatableResponse createOrder) {
-        return createOrder
-                .statusCode(HttpURLConnection.HTTP_CREATED)
-                .assertThat().body("track", notNullValue())
-                .extract()
-                .path("track");
     }
 
     public static Order createSomeOrder(String[] color) {

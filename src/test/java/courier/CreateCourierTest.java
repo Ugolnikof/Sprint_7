@@ -9,7 +9,7 @@ import org.junit.Test;
 public class CreateCourierTest {
     private String courierId;
     private Courier courier;
-    private final CourierProperties client = new CourierProperties();
+    private final CourierProperties courierProperties = new CourierProperties();
     private final CourierChecks check = new CourierChecks();
 
     @Test
@@ -17,11 +17,11 @@ public class CreateCourierTest {
     @Description("positive test")
     public void createCourier() {
         courier = Courier.random();
-        ValidatableResponse createResponse = client.createCourier(courier);
+        ValidatableResponse createResponse = courierProperties.createCourier(courier);
         check.checkCreateSuccessfully(createResponse);
 
         CourierCredentials creds = CourierCredentials.from(courier);
-        ValidatableResponse loginResponse = client.loginCourier(creds);
+        ValidatableResponse loginResponse = courierProperties.loginCourier(creds);
         courierId = String.valueOf(check.checkLoginSuccessfully(loginResponse));
     }
 
@@ -34,10 +34,10 @@ public class CreateCourierTest {
     @Description("negative test")
     public void createCourierTwin() {
         courier = Courier.random();
-        client.createCourier(courier);
+        courierProperties.createCourier(courier);
 
         Courier courierTwin = Courier.from(courier);
-        ValidatableResponse createResponse = client.createCourier(courierTwin);
+        ValidatableResponse createResponse = courierProperties.createCourier(courierTwin);
         check.checkCreateTwin(createResponse);
     }
 
@@ -50,7 +50,7 @@ public class CreateCourierTest {
         Courier courierWithoutPassword = Courier.from(courier);
         courierWithoutPassword.setPassword(null);
 
-        ValidatableResponse createResponse = client.createCourier(courierWithoutPassword);
+        ValidatableResponse createResponse = courierProperties.createCourier(courierWithoutPassword);
         check.checkCreateUnSuccessfully(createResponse);
     }
 
@@ -62,7 +62,7 @@ public class CreateCourierTest {
         if (courierId != null) {
             CourierRemoval courierRemoval = new CourierRemoval(courierId);
 
-            ValidatableResponse removalResponse = client.deleteCourier(courierRemoval);
+            ValidatableResponse removalResponse = courierProperties.deleteCourier(courierRemoval);
             check.checkRemovalSuccessfully(removalResponse);
         }
     }

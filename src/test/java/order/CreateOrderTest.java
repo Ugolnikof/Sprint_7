@@ -12,6 +12,8 @@ import org.junit.runners.Parameterized;
 public class CreateOrderTest {
     private int track;
     private final String[] color;
+    OrderProperties orderProperties = new OrderProperties();
+    OrderChecks check = new OrderChecks();
 
     public CreateOrderTest(String[] color) {
         this.color = color;
@@ -32,8 +34,8 @@ public class CreateOrderTest {
     @Description("positive test")
     public void createOrder() {
         Order order = Order.createSomeOrder(color);
-        ValidatableResponse createOrder = Order.createOrder(order);
-        track = Order.checkOrderCreated(createOrder);
+        ValidatableResponse createOrder = OrderProperties.createOrder(order);
+        track = check.checkOrderCreated(createOrder);
     }
 
     @After
@@ -43,8 +45,8 @@ public class CreateOrderTest {
         if (track != 0) {
             OrderCancel cancel = new OrderCancel(track);
 
-            ValidatableResponse cancelResponse = OrderCancel.orderCancel(cancel);
-            cancel.checkCancelSuccessfully(cancelResponse);
+            ValidatableResponse cancelResponse = orderProperties.orderCancel(cancel);
+            check.checkCancelSuccessfully(cancelResponse);
         }
     }
 }

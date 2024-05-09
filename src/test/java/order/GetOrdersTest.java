@@ -7,13 +7,15 @@ import org.junit.Test;
 
 
 public class GetOrdersTest {
+    OrderProperties orderProperties = new OrderProperties();
+    OrderChecks check = new OrderChecks();
 
     @Test
     @DisplayName("get orders list")
     @Description("positive test")
     public void getOrders() {
-        ValidatableResponse orderList = Order.getOrdersList();
-        Order.checkOrdersListShows(orderList);
+        ValidatableResponse orderList = orderProperties.getOrdersList();
+        check.checkOrdersListShows(orderList);
     }
 
 }
