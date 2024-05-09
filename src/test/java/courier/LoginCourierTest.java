@@ -11,13 +11,15 @@ import org.junit.Test;
 public class LoginCourierTest {
     private String courierId;
     private Courier courier;
+    private final CourierProperties client = new CourierProperties();
+    private final CourierChecks check = new CourierChecks();
 
     @Before
     @DisplayName("create courier")
     @Description("positive test")
     public void createCourier() {
         courier = Courier.random();
-        Courier.createCourier(courier);
+        client.createCourier(courier);
     }
 
     @Test
@@ -26,8 +28,8 @@ public class LoginCourierTest {
     public void loginCourier() {
         CourierCredentials creds = CourierCredentials.from(courier);
 
-        ValidatableResponse loginResponse = Courier.loginCourier(creds);
-        courierId = String.valueOf(Courier.checkLoginSuccessfully(loginResponse));
+        ValidatableResponse loginResponse = client.loginCourier(creds);
+        courierId = String.valueOf(check.checkLoginSuccessfully(loginResponse));
     }
 
     @Test
@@ -37,8 +39,8 @@ public class LoginCourierTest {
         CourierCredentials creds = CourierCredentials.from(courier);
         creds.setLogin(RandomStringUtils.randomAlphabetic(8, 16));
 
-        ValidatableResponse loginResponse = Courier.loginCourier(creds);
-        Courier.checkLoginNotFound(loginResponse);
+        ValidatableResponse loginResponse = client.loginCourier(creds);
+        check.checkLoginNotFound(loginResponse);
     }
 
     @Test
@@ -48,8 +50,8 @@ public class LoginCourierTest {
         CourierCredentials creds = CourierCredentials.from(courier);
         creds.setLogin(null);
 
-        ValidatableResponse loginResponse = Courier.loginCourier(creds);
-        Courier.checkLoginUnSuccessfully(loginResponse);
+        ValidatableResponse loginResponse = client.loginCourier(creds);
+        check.checkLoginUnSuccessfully(loginResponse);
     }
 
     @After
@@ -59,8 +61,8 @@ public class LoginCourierTest {
         if (courierId != null) {
             CourierRemoval courierRemoval = new CourierRemoval(courierId);
 
-            ValidatableResponse removalResponse = CourierRemoval.deleteCourier(courierRemoval);
-            courierRemoval.checkRemovalSuccessfully(removalResponse);
+            ValidatableResponse removalResponse = client.deleteCourier(courierRemoval);
+            check.checkRemovalSuccessfully(removalResponse);
         }
     }
 
