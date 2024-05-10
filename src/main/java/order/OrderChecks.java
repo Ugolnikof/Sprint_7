@@ -10,16 +10,16 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class OrderChecks {
     @Step("check orders list shows successfully")
-    public void checkOrdersListShows(ValidatableResponse orderList) {
-        orderList
+    public void checkOrdersListShows(ValidatableResponse response) {
+        response
                 .statusCode(HttpURLConnection.HTTP_OK)
                 .assertThat()
                 .body("orders", notNullValue());
     }
 
     @Step("check order created successfully")
-    public Integer checkOrderCreated(ValidatableResponse createOrder) {
-        return createOrder
+    public Integer checkOrderCreated(ValidatableResponse response) {
+        return response
                 .statusCode(HttpURLConnection.HTTP_CREATED)
                 .assertThat().body("track", notNullValue())
                 .extract()
@@ -27,8 +27,8 @@ public class OrderChecks {
     }
 
     @Step("check order canceled successfully")
-    public void checkCancelSuccessfully(ValidatableResponse cancelResponse) {
-        cancelResponse
+    public void checkCancelSuccessfully(ValidatableResponse response) {
+        response
                 .statusCode(HttpURLConnection.HTTP_OK)
                 .assertThat().body("ok", Matchers.equalTo(true));
     }
